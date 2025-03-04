@@ -19,11 +19,18 @@
                 <a class="navbar-brand" href="#">
                     <img src="images/logo.svg" alt="Logo" height="40">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
+                
+                <!-- Hamburger Menu Button -->
+                <button class="navbar-toggler" type="button" id="hamburger-menu">
+                    <span class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="#home">Home</a>
                         </li>
@@ -207,21 +214,30 @@
     <!-- Contact Section -->
     <section id="contact" class="py-5 bg-dark text-white">
         <div class="container">
-            <h2 class="section-title text-white mb-4">Contact Us</h2>
-            <p class="mb-4">Have a project in mind or want to collaborate? Feel free to reach out! We're here to help you bring your ideas to life.</p>
+            <h2 class="section-title text-white mb-4">Hubungi Kami</h2>
+            <p class="mb-4">Punya proyek atau ingin berkolaborasi? Jangan ragu untuk menghubungi kami!</p>
             
-            <form class="contact-form">
+            <form id="contact-form" class="contact-form">
                 <div class="mb-3">
-                    <input type="email" class="form-control" placeholder="E-Mail" required>
+                    <label for="fullName" class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="fullName" name="fullName" required>
                 </div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" placeholder="Username" required>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
                 </div>
                 <div class="mb-3">
-                    <textarea class="form-control" rows="5" placeholder="criticism and suggestions" required></textarea>
+                    <label for="phone" class="form-label">Nomor Handphone</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
                 </div>
-                <button type="submit" class="btn btn-light">Submit</button>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Pesan</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-light">Kirim Pesan</button>
             </form>
+        </div>
+    </section>
             
             <div class="text-center mt-4">
                 <p>Alternative :</p>
@@ -292,7 +308,15 @@
             </div>
         </div>
     </footer>
-
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery Validation Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Custom JavaScript for Hamburger Menu -->
+    <script src="script.js"></script>
+    <script src="contact-validation.js"></script>
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
