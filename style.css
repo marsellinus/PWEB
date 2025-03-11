@@ -1,0 +1,293 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #dc3545;
+}
+
+.section-title {
+    font-weight: 700;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.view-all {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.view-all:hover {
+    text-decoration: underline;
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+    font-weight: 500;
+    margin: 0 10px;
+}
+
+.nav-link:hover {
+    color: #dc3545;
+}
+
+/* Hero Section */
+.profile-img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border: 8px solid rgba(220, 53, 69, 0.1);
+    margin-bottom: 1rem;
+}
+
+/* Skills Section */
+.card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.ratings {
+    color: #ffc107;
+}
+
+/* Portfolio Section */
+.portfolio-card {
+    overflow: hidden;
+}
+
+.portfolio-card img {
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.portfolio-card:hover img {
+    transform: scale(1.05);
+}
+
+.tech-badge {
+    display: inline-block;
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Testimonial Section */
+.testimonial-item {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.testimonial-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 5px solid rgba(220, 53, 69, 0.1);
+}
+
+.testimonial-text {
+    font-style: italic;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    height: 40px;
+    background-color: #dc3545;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+}
+
+.carousel-control-prev {
+    left: -20px;
+}
+
+.carousel-control-next {
+    right: -20px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Contact Section */
+.contact-form input,
+.contact-form textarea {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 12px 15px;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    color: #333;
+    border-radius: 50%;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Footer */
+footer {
+    color: #555;
+}
+
+footer h5 {
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+}
+
+footer a {
+    color: #555;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+footer a:hover {
+    color: #dc3545;
+}
+
+/* Media Queries */
+@media (max-width: 991px) {
+    .profile-img {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .testimonial-img {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next {
+        display: none;
+    }
+}
+
+/* Existing CSS remains the same, adding these styles at the end */
+
+/* Hamburger Menu Styles */
+.navbar-toggler {
+    border: none;
+    background: transparent;
+    width: 30px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.hamburger-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.hamburger-icon span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.hamburger-icon span:nth-child(1) {
+    top: 0;
+}
+
+.hamburger-icon span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.hamburger-icon span:nth-child(3) {
+    bottom: 0;
+}
+
+/* Hamburger Menu Animation */
+.navbar-toggler.active .hamburger-icon span:nth-child(1) {
+    top: 50%;
+    transform: rotate(45deg);
+}
+
+.navbar-toggler.active .hamburger-icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggler.active .hamburger-icon span:nth-child(3) {
+    bottom: 50%;
+    transform: rotate(-45deg);
+}
+
+/* Mobile Navigation Styles */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        display: none;
+    }
+
+    .navbar-collapse.show {
+        display: block;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-item {
+        margin: 10px 0;
+    }
+}
