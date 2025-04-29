@@ -62,9 +62,13 @@ body {
 .profile-img {
     width: 100%;
     max-width: 250px;
+    height: auto;
+    aspect-ratio: 1/1; /* Ensure perfect square */
+    object-fit: cover; /* Maintain aspect ratio while filling */
     border: 5px solid white;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform var(--transition-speed);
+    border-radius: 50% !important; /* Force perfectly circular shape */
 }
 
 .profile-img:hover {
@@ -198,7 +202,7 @@ footer a:hover {
     color: var(--danger-color);
 }
 
-.social-icon {
+social-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -389,6 +393,37 @@ footer a:hover {
     color: white !important;
 }
 
+/* Table of Contents */
+.toc-container {
+    position: relative; /* Changed from sticky to relative */
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.375rem;
+}
+
+.toc-container .card-body {
+    padding: 1.25rem;
+}
+
+.toc-list {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.toc-list a {
+    color: var(--dark-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: block;
+    padding: 5px 0;
+    transition: color 0.3s;
+}
+
+.toc-list a:hover,
+.toc-list a.active {
+    color: var(--danger-color);
+}
+
 /* Author Box Styling */
 .author-box {
     border-radius: 10px;
@@ -448,30 +483,6 @@ footer a:hover {
     font-size: 0.85rem;
     color: var(--gray-color);
     margin-bottom: 10px;
-}
-
-/* Table of Contents */
-.toc-container {
-    position: sticky;
-    top: 100px;
-}
-
-.toc-list {
-    padding-left: 20px;
-}
-
-.toc-list a {
-    color: var(--dark-color);
-    text-decoration: none;
-    font-size: 0.9rem;
-    display: block;
-    padding: 5px 0;
-    transition: color 0.3s;
-}
-
-.toc-list a:hover,
-.toc-list a.active {
-    color: var(--danger-color);
 }
 
 /* Responsive */
