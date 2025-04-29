@@ -5,21 +5,145 @@
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize components based on current page
+    // Initialize navigation highlighting and behavior
+    initNavigation();
+    
+    // Initialize other components
+    highlightActiveNavItem();
+    handleResponseMessages();
     initCommonComponents();
     
     // Initialize specific page functionality
     if (isCurrentPage('blog.html')) {
         initBlogPage();
+        initBlogFilters();
     } else if (isCurrentPage('article.html')) {
         initArticlePage();
     } else if (isCurrentPage('index.html') || isHomePage()) {
         initHomePage();
     }
-    
-    // Handle response messages (replaces iframe_response_handler.html)
-    handleResponseMessages();
 });
+
+/**
+ * Initialize navigation highlighting and behavior
+ */
+function initNavigation() {
+    // Get all navigation links
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    
+    // Determine current page - for non-index pages
+    const currentPath = window.location.pathname;
+    const isHomePage = currentPath.endsWith('index.html') || 
+                       currentPath.endsWith('/') || 
+                       currentPath === '';
+    
+    // Handle section navigation on the home page
+    if (isHomePage) {
+        // First set the home link as active by default
+        const homeLink = document.getElementById('home-link');
+        if (homeLink) homeLink.classList.add('active');
+        
+        // Handle click events on all navigation links on the home page
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Remove active class from all links
+                navLinks.forEach(navLink => navLink.classList.remove('active'));
+                
+                // Add active class to the clicked link
+                this.classList.add('active');
+                
+                // If it's a section link (has hash), handle smooth scrolling
+                const href = this.getAttribute('href');
+                if (href && href.startsWith('#') && href !== '#') {
+                    e.preventDefault();
+                    const targetSection = document.querySelector(href);
+                    if (targetSection) {
+                        const headerOffset = 80;
+                        const sectionPosition = targetSection.getBoundingClientRect().top;
+                        const offsetPosition = sectionPosition + window.pageYOffset - headerOffset;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Also handle scroll events to update active link based on visible section
+        initScrollSpy(navLinks);
+    } else {
+        // For non-home pages, determine active link based on current URL
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            
+            // Set active class based on URL path
+            if (currentPath.includes('blog.html') || currentPath.includes('article.html')) {
+                if (link.getAttribute('href') === 'blog.html') {
+                    link.classList.add('active');
+                }
+            } else {
+                // Default case for other pages
+                const linkHref = link.getAttribute('href');
+                if (linkHref && currentPath.includes(linkHref) && linkHref !== '#') {
+                    link.classList.add('active');
+                }
+            }
+        });
+    }
+}
+
+/**
+ * Initialize scroll spy functionality to highlight nav items based on scroll position
+ */
+function initScrollSpy(navLinks) {
+    // Check which section is in view on scroll
+    window.addEventListener('scroll', function() {
+        // Use requestAnimationFrame for better performance
+        requestAnimationFrame(function() {
+            // Get current scroll position
+            const scrollPosition = window.scrollY + 150; // Adjust offset as needed
+            
+            // If at the very top, highlight home
+            if (scrollPosition < 100) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                const homeLink = document.getElementById('home-link');
+                if (homeLink) homeLink.classList.add('active');
+                return;
+            }
+            
+            // Find which section is currently in view
+            let currentSection = null;
+            const sections = document.querySelectorAll('section[id]');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150; // Adjust offset as needed
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            // Update the active navigation link
+            if (currentSection) {
+                navLinks.forEach(link => {
+                    // Get the href attribute
+                    const href = link.getAttribute('href');
+                    
+                    // Remove active class
+                    link.classList.remove('active');
+                    
+                    // Add active class if href matches the current section
+                    if (href === '#' + currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    });
+}
 
 /**
  * Check if current page is home page
@@ -249,7 +373,7 @@ function initBackToTop() {
                     backToTopBtn.style.display = 'none';
                 }
             }, 300);
-        }
+        });
     });
 }
 
@@ -257,52 +381,104 @@ function initBackToTop() {
  * Highlight active nav item based on current page or scroll position
  */
 function highlightActiveNavItem() {
-    const currentLocation = window.location.href;
+    // Get current URL path
+    const currentPath = window.location.pathname;
+    
+    // Determine current page based on pathname
+    let currentPage = 'index.html';
+    if (currentPath.includes('blog.html')) {
+        currentPage = 'blog.html';
+    } else if (currentPath.includes('article.html')) {
+        currentPage = 'blog.html'; // Articles are part of blog section
+    }
+    
+    // Get all navigation links
     const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
     
+    // First remove all active classes
     navLinks.forEach(link => {
-        // Remove active class from all links first
         link.classList.remove('active');
-        
-        const linkHref = link.getAttribute('href');
-        
-        // Check if the link href is in the current URL for non-anchor links
-        if (!linkHref.startsWith('#') && currentLocation.includes(linkHref)) {
-            link.classList.add('active');
-        }
     });
     
-    // For homepage, handle section highlighting on scroll
-    if (isHomePage()) {
-        // Debounce scroll handler for better performance
-        let scrollTimeout;
-        
-        window.addEventListener('scroll', function() {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(function() {
-                const scrollPosition = window.scrollY + 150; // Adjust offset as needed
+    // Add active class to current page link
+    const currentNavLink = document.querySelector(`.navbar-nav .nav-link[href="${currentPage}"]`);
+    if (currentNavLink) {
+        currentNavLink.classList.add('active');
+    } else if (currentPage === 'index.html') {
+        // If we're on the home page, activate the Home link
+        const homeLink = document.querySelector('.navbar-nav .nav-link[href="index.html"]');
+        if (homeLink) {
+            homeLink.classList.add('active');
+        }
+    }
+    
+    // Only set up scroll-based highlighting on homepage
+    if (currentPage === 'index.html') {
+        setupScrollHighlighting(navLinks);
+    }
+}
+
+/**
+ * Set up scroll-based navigation highlighting for homepage
+ */
+function setupScrollHighlighting(navLinks) {
+    // Track last section to prevent flickering
+    let lastActiveSection = '';
+    
+    window.addEventListener('scroll', function() {
+        // Debounce the scroll event for performance
+        if (!window.scrollTimeout) {
+            window.scrollTimeout = setTimeout(function() {
+                // Get current scroll position
+                const scrollPosition = window.scrollY + 100;
                 
-                // Get all sections with IDs
+                // Check if we're at the very top, highlight Home
+                if (scrollPosition < 100) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const homeLink = document.querySelector('.nav-link[href="index.html"]');
+                    if (homeLink) homeLink.classList.add('active');
+                    lastActiveSection = 'home';
+                    window.scrollTimeout = null;
+                    return;
+                }
+                
+                // Find the current visible section
                 const sections = document.querySelectorAll('section[id]');
+                let currentSection = lastActiveSection;
                 
                 sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.offsetHeight;
+                    const sectionTop = section.offsetTop - 150;
+                    const sectionBottom = sectionTop + section.offsetHeight;
                     const sectionId = section.getAttribute('id');
                     
-                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                        // Clear all active classes first
-                        navLinks.forEach(navLink => {
-                            navLink.classList.remove('active');
-                            if (navLink.getAttribute('href') === `#${sectionId}`) {
-                                navLink.classList.add('active');
-                            }
-                        });
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                        currentSection = sectionId;
                     }
                 });
+                
+                // If we found a current section and it's different from the last one
+                if (currentSection && currentSection !== lastActiveSection) {
+                    // Remove active class from all nav links
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    
+                    // Add active class to the current section nav link
+                    const activeLink = document.querySelector(`.nav-link[href="#${currentSection}"]`);
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                    } else if (currentSection === 'home') {
+                        // For home section, highlight the index.html link
+                        const homeLink = document.querySelector('.nav-link[href="index.html"]');
+                        if (homeLink) homeLink.classList.add('active');
+                    }
+                    
+                    lastActiveSection = currentSection;
+                }
+                
+                // Clear the timeout
+                window.scrollTimeout = null;
             }, 100);
-        });
-    }
+        }
+    });
 }
 
 /**
@@ -376,38 +552,224 @@ function isCurrentPage(filename) {
     return path.endsWith(filename) || path.includes(`/${filename}`);
 }
 
-// ... other functions from your script.js ...
-
 /**
  * Helper function to show success messages using SweetAlert or fallback to alert
  */
-function showSuccess(title, message) {
+function showSuccess(title, text) {
     if (typeof Swal !== 'undefined') {
-        Swal.fire({
+        return Swal.fire({
             icon: 'success',
             title: title,
-            text: message || '',
-            confirmButtonColor: '#dc3545'
+            text: text,
+            confirmButtonText: 'OK'
         });
     } else {
-        alert(title + (message ? '\n' + message : ''));
+        alert(title + "\n" + text);
+        return Promise.resolve();
     }
 }
 
 /**
  * Helper function to show error messages using SweetAlert or fallback to alert
  */
-function showError(message) {
+function showError(title, text) {
     if (typeof Swal !== 'undefined') {
-        Swal.fire({
+        return Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: message,
-            confirmButtonColor: '#dc3545'
+            title: title,
+            text: text,
+            confirmButtonText: 'OK'
         });
     } else {
-        alert('Error: ' + message);
+        alert(title + "\n" + text);
+        return Promise.resolve();
     }
 }
 
-// ... rest of your script.js functions for blog, article, home pages ...
+/**
+ * Blog filtering functionality
+ */
+function initBlogFilters() {
+    // Elements
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const sortOptions = document.querySelectorAll('.sort-option');
+    const blogItems = document.querySelectorAll('.blog-item');
+    const noResultsElement = document.getElementById('no-results');
+    const resetButton = document.getElementById('reset-filters');
+    
+    // If we're not on the blog page, exit early
+    if (!filterButtons.length || !blogItems.length) {
+        return;
+    }
+    
+    // Current filter state
+    let currentFilter = 'all';
+    let currentSort = 'newest';
+    
+    // Initialize - show all items
+    filterAndSortItems();
+    
+    // Filter button click handler
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update current filter
+            currentFilter = this.getAttribute('data-filter');
+            
+            // Apply filtering and sorting
+            filterAndSortItems();
+        });
+    });
+    
+    // Sort option click handler
+    sortOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Update active sort option
+            sortOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update sort dropdown button text
+            const sortText = this.textContent.trim();
+            document.getElementById('sortDropdown').innerHTML = `<i class="fas fa-sort me-1"></i> ${sortText}`;
+            
+            // Update current sort
+            currentSort = this.getAttribute('data-sort');
+            
+            // Apply filtering and sorting
+            filterAndSortItems();
+        });
+    });
+    
+    // Reset filters button click handler
+    if (resetButton) {
+        resetButton.addEventListener('click', function() {
+            // Reset filter
+            filterButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-filter') === 'all') {
+                    btn.classList.add('active');
+                }
+            });
+            currentFilter = 'all';
+            
+            // Reset sort
+            sortOptions.forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('data-sort') === 'newest') {
+                    opt.classList.add('active');
+                }
+            });
+            currentSort = 'newest';
+            document.getElementById('sortDropdown').innerHTML = '<i class="fas fa-sort me-1"></i> Newest First';
+            
+            // Apply filtering and sorting
+            filterAndSortItems();
+        });
+    }
+    
+    // Search functionality
+    const searchInput = document.getElementById('blog-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            // If empty, revert to current filter
+            if (searchTerm === '') {
+                filterAndSortItems();
+                return;
+            }
+            
+            // Hide all items
+            blogItems.forEach(item => {
+                item.style.display = 'none';
+            });
+            
+            // Show items that match search term
+            let foundItems = 0;
+            blogItems.forEach(item => {
+                const title = item.querySelector('.blog-title').textContent.toLowerCase();
+                const excerpt = item.querySelector('.blog-excerpt')?.textContent.toLowerCase() || '';
+                const category = item.getAttribute('data-category').toLowerCase();
+                
+                if (title.includes(searchTerm) || excerpt.includes(searchTerm) || category.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    foundItems++;
+                }
+            });
+            
+            // Show/hide no results message
+            if (foundItems === 0) {
+                if (noResultsElement) noResultsElement.classList.remove('d-none');
+            } else {
+                if (noResultsElement) noResultsElement.classList.add('d-none');
+            }
+        });
+    }
+    
+    // Main filtering and sorting function
+    function filterAndSortItems() {
+        // Get all items that match the current filter
+        const filteredItems = Array.from(blogItems).filter(item => {
+            if (currentFilter === 'all') {
+                return true;
+            } else {
+                return item.getAttribute('data-category') === currentFilter;
+            }
+        });
+        
+        // Show or hide no results message
+        if (filteredItems.length === 0) {
+            if (noResultsElement) noResultsElement.classList.remove('d-none');
+        } else {
+            if (noResultsElement) noResultsElement.classList.add('d-none');
+        }
+        
+        // Sort the filtered items
+        filteredItems.sort((a, b) => {
+            // Get dates from data attributes or elements
+            const dateTextA = a.querySelector('.blog-date').textContent.trim();
+            const dateTextB = b.querySelector('.blog-date').textContent.trim();
+            
+            // Extract dates using regex
+            const dateRegex = /(\w+)\s+(\d+),\s+(\d{4})/;
+            const matchA = dateTextA.match(dateRegex);
+            const matchB = dateTextB.match(dateRegex);
+            
+            if (matchA && matchB) {
+                const dateA = new Date(`${matchA[1]} ${matchA[2]}, ${matchA[3]}`);
+                const dateB = new Date(`${matchB[1]} ${matchB[2]}, ${matchB[3]}`);
+                
+                if (currentSort === 'newest') {
+                    return dateB - dateA;
+                } else if (currentSort === 'oldest') {
+                    return dateA - dateB;
+                }
+            }
+            
+            // Fallback for 'popular' or if date parsing fails
+            if (currentSort === 'popular') {
+                // Use view count if available, otherwise random for demo
+                const viewsA = parseInt(a.querySelector('.far.fa-eye')?.nextSibling?.textContent || '0');
+                const viewsB = parseInt(b.querySelector('.far.fa-eye')?.nextSibling?.textContent || '0');
+                return viewsB - viewsA;
+            }
+            
+            return 0;
+        });
+        
+        // Hide all items first
+        blogItems.forEach(item => {
+            item.style.display = 'none';
+        });
+        
+        // Show filtered and sorted items
+        filteredItems.forEach(item => {
+            item.style.display = 'block';
+        });
+    }
+}

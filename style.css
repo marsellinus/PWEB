@@ -36,11 +36,13 @@ body {
     font-weight: 700;
 }
 
+/* Navigation styles - Improved to prevent stuck ::after effect */
 .navbar-light .navbar-nav .nav-link {
     color: var(--dark-color);
     padding: 10px 15px;
     font-weight: 500;
     position: relative;
+    transition: color 0.3s ease;
 }
 
 .navbar-light .navbar-nav .nav-link:hover,
@@ -48,31 +50,127 @@ body {
     color: var(--danger-color);
 }
 
-.navbar-light .navbar-nav .nav-link.active::after {
+/* Reset the ::after for all links first */
+.navbar-light .navbar-nav .nav-link::after {
     content: '';
     position: absolute;
-    left: 15px;
-    right: 15px;
+    left: 50%;
     bottom: 0;
+    width: 0;
     height: 2px;
     background-color: var(--danger-color);
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+    opacity: 0;
 }
 
-/* Profile image styling */
+/* Hover state for all links */
+.navbar-light .navbar-nav .nav-link:hover::after {
+    width: 50%;
+    opacity: 0.7;
+}
+
+/* Active state - explicitly set */
+.navbar-light .navbar-nav .nav-link.active::after {
+    width: 80%;
+    opacity: 1;
+}
+
+/* Remove active state from non-active links */
+.navbar-light .navbar-nav .nav-item .nav-link:not(.active)::after {
+    width: 0;
+    opacity: 0;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-light .navbar-nav .nav-link::after {
+        left: 0;
+        transform: translateX(0);
+        bottom: 0;
+    }
+    
+    .navbar-light .navbar-nav .nav-link:hover::after,
+    .navbar-light .navbar-nav .nav-link.active::after {
+        width: 50px;
+    }
+    
+    .navbar-light .navbar-nav .nav-link:not(.active)::after {
+        width: 0;
+    }
+}
+
+/* Profile image styling - Guaranteed circular in all environments */
 .profile-img {
-    width: 100%;
-    max-width: 250px;
-    height: auto;
-    aspect-ratio: 1/1; /* Ensure perfect square */
-    object-fit: cover; /* Maintain aspect ratio while filling */
-    border: 5px solid white;
+    width: 250px !important; /* Fixed width */
+    height: 250px !important; /* Fixed height - must match width for perfect circle */
+    object-fit: cover !important; /* Maintain aspect ratio while filling */
+    object-position: center !important; /* Center the image within the container */
+    border: 5px solid white !important;
+    border-radius: 50% !important; /* Force circular shape */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform var(--transition-speed);
-    border-radius: 50% !important; /* Force perfectly circular shape */
+    display: inline-block; /* Ensures proper rendering */
+    overflow: hidden; /* Ensures content stays within the circle */
 }
 
 .profile-img:hover {
     transform: scale(1.03);
+}
+
+/* Profile container ensures perfect circular shape */
+.profile-container {
+    width: 250px;
+    height: 250px;
+    max-width: 100%;
+    position: relative;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden; /* Ensures content stays within circular bounds */
+}
+
+/* Fix for other profile images throughout the site */
+.blog-author img {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    flex-shrink: 0;
+    border: 2px solid #f1f1f1;
+}
+
+.author-lg-img {
+    width: 120px !important;
+    height: 120px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-img {
+    width: 120px !important;
+    height: 120px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.article-author-img {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    margin-right: 15px;
+    border: 2px solid white;
+}
+
+.comment-avatar img {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 2px solid #f8f9fa;
 }
 
 /* Skills section */
@@ -140,14 +238,6 @@ body {
     font-style: italic;
 }
 
-.testimonial-img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border: 3px solid #fff;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
 .carousel-control-next, 
 .carousel-control-prev {
     width: 40px;
@@ -177,6 +267,191 @@ body {
 .contact-form .form-control:focus {
     box-shadow: none;
     border-color: var(--danger-color);
+}
+
+/* Contact section enhancements - Slim fit design */
+#contact .row {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+#contact .col-md-6, 
+#contact .col-md-7,
+#contact .col-md-4 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.contact-form input.form-control,
+.contact-form textarea.form-control {
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    padding: 0.6rem 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form input.form-control:focus,
+.contact-form textarea.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+}
+
+.contact-form label {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.contact-form button[type="submit"] {
+    padding: 0.5rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.contact-form button[type="submit"]:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.contact-info-box {
+    padding: 1.5rem 0;
+}
+
+.contact-method {
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.8);
+}
+
+.contact-method i {
+    color: var(--danger-color);
+    width: 24px;
+    text-align: center;
+}
+
+/* Contact section styling - improved layout */
+#contact .social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#contact .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#contact .social-icon.facebook {
+    background-color: #3b5998;
+}
+
+#contact .social-icon.instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+#contact .social-icon.twitter {
+    background-color: #1da1f2;
+}
+
+#contact .social-icon.linkedin {
+    background-color: #0077b5;
+}
+
+#contact .social-icon.github {
+    background-color: #333;
+}
+
+#contact .social-icon:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Form styling improvements */
+.contact-form .form-control {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.contact-form .form-control:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.1);
+}
+
+.contact-form .form-label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Social links in contact section */
+.social-links {
+    display: flex;
+    gap: 12px;
+    margin: 15px 0 10px;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.social-icon.facebook {
+    background-color: #3b5998;
+}
+
+.social-icon.instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-icon.twitter {
+    background-color: #1da1f2;
+}
+
+.social-icon.linkedin {
+    background-color: #0077b5;
+}
+
+.social-icon.github {
+    background-color: #333;
+}
+
+.social-icon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments for contact section */
+@media (max-width: 767.98px) {
+    .contact-info-box {
+        margin-top: 2rem;
+        text-align: center;
+    }
+    
+    .contact-method {
+        justify-content: center;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
 }
 
 /* Footer */
@@ -217,6 +492,395 @@ social-icon {
 .social-icon:hover {
     background-color: var(--danger-color);
     color: white;
+}
+
+/* Updated social links styling - without box padding */
+.social-links-section {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin: 1.2rem 0;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    color: #f8f9fa;
+    background-color: rgba(255, 255, 255, 0.15);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    font-size: 1.2rem;
+}
+
+/* Specific brand colors for social icons */
+.social-icon.facebook {
+    background-color: #3b5998;
+}
+
+.social-icon.instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-icon.twitter {
+    background-color: #1da1f2;
+}
+
+.social-icon.linkedin {
+    background-color: #0077b5;
+}
+
+.social-icon.github {
+    background-color: #333;
+}
+
+/* Hover effect */
+.social-icon:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    filter: brightness(110%);
+}
+
+/* Responsive styling */
+@media (max-width: 576px) {
+    .social-links {
+        gap: 14px;
+    }
+    
+    .social-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Enhanced social links styling */
+.social-links-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin: 15px 0;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+    font-size: 1.2rem;
+}
+
+/* Brand colors with gradients for social icons */
+.social-icon.facebook:hover {
+    background: linear-gradient(to bottom right, #3b5998, #4c70ba);
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+.social-icon.instagram:hover {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+.social-icon.twitter:hover {
+    background: linear-gradient(to bottom right, #1da1f2, #0d95e8);
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+.social-icon.linkedin:hover {
+    background: linear-gradient(to bottom right, #0077b5, #0e98e9);
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+.social-icon.github:hover {
+    background: linear-gradient(to bottom right, #333333, #5c5c5c);
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+/* Ripple effect */
+.social-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: width 0.3s, height 0.3s, opacity 0.3s;
+}
+
+.social-icon:active::after {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: 0s;
+}
+
+/* Footer-specific social icon styling */
+footer .social-links {
+    margin-bottom: 20px;
+}
+
+footer .social-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+}
+
+/* Dark sections styling */
+.bg-dark .social-links-container {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.bg-dark .connect-text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.bg-dark .social-links .social-icon {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .social-links {
+        gap: 12px;
+    }
+    
+    .social-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .social-links {
+        gap: 8px;
+        justify-content: center;
+    }
+    
+    .social-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 576px) {
+    .social-links {
+        gap: 10px;
+    }
+    
+    .social-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Context-specific social links styling */
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+/* Base social icon styling */
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    font-size: 1rem;
+}
+
+/* Standard highlight color for all social icons on hover */
+.social-icon:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+/* Footer-specific styling */
+footer .social-links {
+    margin-bottom: 15px;
+    justify-content: flex-start;
+}
+
+footer .social-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+}
+
+/* Dark sections styling */
+.bg-dark .social-links {
+    justify-content: center;
+}
+
+.bg-dark .social-links .social-icon {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Author box styling */
+.author-box .social-links {
+    justify-content: flex-start;
+}
+
+.author-box .social-icon {
+    width: 34px;
+    height: 34px;
+}
+
+/* Contact section styling */
+#contact .social-links {
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+#contact .social-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .social-links {
+        gap: 10px;
+    }
+    
+    .social-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Social media section - Centered on all devices */
+.social-media-section {
+    margin: 0 auto;
+    padding-top: 1rem;
+    max-width: 500px;
+}
+
+.social-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px auto;
+    flex-wrap: wrap;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    font-size: 1.1rem;
+}
+
+.social-icon:hover {
+    background-color: #dc3545;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Social icons in different contexts */
+footer .social-links {
+    justify-content: flex-start;
+}
+
+footer .social-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 0.9rem;
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+.author-box .social-links {
+    justify-content: flex-start;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    footer .social-links {
+        justify-content: center;
+    }
+    
+    .social-icon {
+        width: 40px;
+        height: 40px;
+    }
 }
 
 /* Blog styles */
@@ -279,20 +943,11 @@ social-icon {
     text-decoration: underline;
 }
 
-/* Blog author styling */
+/* Blog author styling - Improved spacing */
 .blog-author {
     display: flex;
     align-items: center;
     gap: 15px; /* Add spacing between image and text */
-}
-
-.blog-author img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50% !important;
-    object-fit: cover;
-    flex-shrink: 0; /* Prevent image from shrinking */
-    border: 2px solid #f1f1f1; /* Add a subtle border */
 }
 
 .blog-author-name {
@@ -339,14 +994,6 @@ social-icon {
     display: flex;
     align-items: center;
     margin-top: 20px;
-}
-
-.article-author-img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50% !important;
-    margin-right: 15px;
-    object-fit: cover;
 }
 
 .article-author-name {
@@ -435,16 +1082,6 @@ social-icon {
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-.author-lg-img {
-    max-width: 120px;
-    width: 120px;
-    height: 120px;
-    border: 3px solid #fff;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    border-radius: 50% !important; /* Force the image to be perfectly circular */
-    object-fit: cover; /* Ensure the image fills the circle properly */
-}
-
 /* Article image styling */
 .article-image img {
     width: 100%;
@@ -467,13 +1104,6 @@ social-icon {
     border-bottom: 1px solid #eee;
 }
 
-.comment-avatar img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50% !important;
-    object-fit: cover;
-}
-
 .comment-author {
     font-weight: 600;
     margin-bottom: 0;
@@ -483,6 +1113,26 @@ social-icon {
     font-size: 0.85rem;
     color: var(--gray-color);
     margin-bottom: 10px;
+}
+
+/* Comment form improvements */
+.comment-form {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 2.5rem;
+}
+
+.comment-form form {
+    padding-bottom: 1rem;
+}
+
+.comment-form .btn {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    transition: transform 0.2s ease;
+}
+
+.comment-form .btn:hover {
+    transform: translateY(-2px);
 }
 
 /* Responsive */
@@ -546,6 +1196,16 @@ social-icon {
     
     .article-content h2 {
         font-size: 1.5rem;
+    }
+
+    .profile-container, .profile-img {
+        width: 200px !important;
+        height: 200px !important;
+    }
+    
+    .author-lg-img, .testimonial-img {
+        width: 100px !important;
+        height: 100px !important;
     }
 }
 
@@ -636,4 +1296,136 @@ social-icon {
 .recommendation-card img {
     height: 200px;
     object-fit: cover;
+}
+
+/* Updated social links styling */
+.enhanced-social-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.enhanced-social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand specific colors */
+.enhanced-social-icon.linkedin {
+    background-color: #0077b5;
+}
+
+.enhanced-social-icon.github {
+    background-color: #333;
+}
+
+.enhanced-social-icon.twitter {
+    background-color: #1da1f2;
+}
+
+.enhanced-social-icon.website {
+    background-color: #dc3545;
+}
+
+.enhanced-social-icon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+}
+
+/* Blog filter section - improved layout and styling */
+.filter-controls {
+    width: 100%;
+}
+
+.filter-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .filter-wrapper {
+        justify-content: flex-end;
+    }
+}
+
+.filter-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.filter-btn.active {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+.sort-dropdown .dropdown-item.active {
+    background-color: #dc3545;
+    color: white;
+}
+
+.sort-dropdown .dropdown-item:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+/* Blog filter improvements */
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-categories {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.sort-dropdown {
+    margin-left: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .filter-controls {
+        justify-content: flex-start;
+    }
+    
+    .sort-dropdown {
+        margin-left: 0;
+    }
+    
+    .enhanced-social-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Replace text-primary with text-danger in relevant places */
+.text-danger {
+    color: #dc3545 !important;
 }

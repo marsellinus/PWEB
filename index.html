@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <!-- Header & Navigation -->
@@ -17,7 +19,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
             <div class="container">
                 <a class="navbar-brand" href="index.html">
-                    <h2 class="m-0 fw-bold">My<span class="text-primary">Portfolio</span></h2>
+                    <h2 class="m-0 fw-bold">My<span class="text-danger">Portfolio</span></h2>
                 </a>
                 
                 <!-- Hamburger Menu Button -->
@@ -28,7 +30,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" href="index.html">Home</a>
+                            <a class="nav-link active" href="#" id="home-link">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#about">About</a>
@@ -63,10 +65,13 @@
                 <div class="col-lg-6">
                     <div class="row">
                         <div class="col-md-6 text-center">
-                            <img src="images/profile.jpg" alt="Marsellinus A.K" class="rounded-circle profile-img">
+                            <!-- Fixed circular image container -->
+                            <div class="profile-container">
+                                <img src="images/profile.jpg" alt="Marsellinus A.K" class="profile-img">
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <h2 class="mb-3">About me</h2>
+                            <h2 class="mb-3" id="about">About me</h2>
                             <p>Tentang saya diawali dari ilmu melalui Resume yang telah saya sediakan sesuai dengan apa yang telah saya alami dan jelaskan di dalam bidang informatika ini</p>
                             <a href="#" class="btn btn-danger px-4 py-2 mt-2">Download Resume</a>
                         </div>
@@ -163,7 +168,6 @@
                                         <i class="far fa-calendar-alt me-2"></i> June 15, 2024
                                     </div>
                                     <h5 class="card-title">Creating Responsive Dashboards</h5>
-                                    <a href="article.html?id=1" class="stretched-link"></a>
                                 </div>
                                 <div class="card-footer bg-white">
                                     <div class="blog-author">
@@ -173,6 +177,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="article.html?id=1" class="stretched-link"></a>
                             </div>
                         </div>
                         
@@ -188,7 +193,6 @@
                                         <i class="far fa-calendar-alt me-2"></i> June 10, 2024
                                     </div>
                                     <h5 class="card-title">Secure IoT Network Solutions</h5>
-                                    <a href="article.html?id=2" class="stretched-link"></a>
                                 </div>
                                 <div class="card-footer bg-white">
                                     <div class="blog-author">
@@ -198,6 +202,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <a href="article.html?id=2" class="stretched-link"></a>
                             </div>
                         </div>
                     </div>
@@ -216,7 +221,8 @@
                         <div class="testimonial-item p-4">
                             <div class="row align-items-center">
                                 <div class="col-md-3 text-center">
-                                    <img src="images/testimonial-1.jpg" alt="Dewi Lestari" class="img-fluid rounded-circle testimonial-img mb-3">
+                                    <!-- Fixed circular image -->
+                                    <img src="images/testimonial-1.jpg" alt="Dewi Lestari" class="testimonial-img mb-3">
                                 </div>
                                 <div class="col-md-9">
                                     <p class="testimonial-text">"Pekerjaannya sangat detail dan terstruktur. Sistem deteksi intrusi berbasis IoT yang dikembangkan telah meningkatkan keamanan perusahaan kami secara signifikan. Terima kasih atas dedikasnya dan respon cepat selama pengerjaan proyek."</p>
@@ -276,40 +282,66 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Contact Section - Slim Fit Version -->
     <section id="contact" class="py-5 bg-dark text-white">
         <div class="container">
-            <h2 class="section-title text-white mb-4">Hubungi Kami</h2>
-            <p class="mb-4">Punya proyek atau ingin berkolaborasi? Jangan ragu untuk menghubungi kami!</p>
-            
-            <form id="contact-form" class="contact-form">
-                <div class="mb-3">
-                    <label for="fullName" class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-control" id="fullName" name="fullName" required>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Nomor Handphone</label>
-                    <input type="tel" class="form-control" id="phone" name="phone" required>
-                </div>
-                <div class="mb-3">
-                    <label for="message" class="form-label">Pesan</label>
-                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-light">Kirim Pesan</button>
-            </form>
-        </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h2 class="section-title text-white mb-4 text-center">Hubungi Kami</h2>
+                    <p class="mb-4 text-center">Punya proyek atau ingin berkolaborasi? Jangan ragu untuk menghubungi kami!</p>
+                    
+                    <div class="row justify-content-center">
+                        <!-- Contact Form Column -->
+                        <div class="col-md-7 mb-5">
+                            <form id="contact-form" class="contact-form" novalidate="novalidate">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fullName" class="form-label">Nama Lengkap</label>
+                                        <input type="text" class="form-control" id="fullName" name="fullName" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Nomor Handphone</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Pesan</label>
+                                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-light">Kirim Pesan</button>
+                            </form>
+                        </div>
 
-        <div class="text-center mt-4">
-            <p>Alternative :</p>
-                <div class="social-links mt-3">
-                <a href="#" class="social-icon me-3"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-icon me-3"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-icon me-3"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <!-- Social Links - Centered Column -->
+                        <div class="col-12 text-center">
+                            <div class="social-media-section py-3">
+                                <h5 class="mb-4">Media Sosial</h5>
+                                
+                                <div class="social-links mx-auto">
+                                    <a href="https://facebook.com/" target="_blank" class="social-icon" aria-label="Facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="https://instagram.com/" target="_blank" class="social-icon" aria-label="Instagram">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="https://twitter.com/" target="_blank" class="social-icon" aria-label="Twitter">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="https://linkedin.com/in/" target="_blank" class="social-icon" aria-label="LinkedIn">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                    <a href="https://github.com/" target="_blank" class="social-icon" aria-label="GitHub">
+                                        <i class="fab fa-github"></i>
+                                    </a>
+                                </div>
+                                <p class="text-muted mt-3 small">Klik untuk terhubung dengan saya di media sosial</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -324,10 +356,21 @@
                     <h5>Kontak</h5>
                     <p>Connect With Us</p>
                     <div class="social-links mb-3">
-                        <a href="#" class="social-icon me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon me-2"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon me-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://facebook.com/" target="_blank" class="social-icon" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com/" target="_blank" class="social-icon" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://twitter.com/" target="_blank" class="social-icon" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/" target="_blank" class="social-icon" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/" target="_blank" class="social-icon" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
                     </div>
                     <p class="small text-muted">©Karyameu 2025</p>
                 </div>
@@ -344,9 +387,9 @@
                 <div class="col-md-2 mb-4 mb-md-0">
                     <h5>Informasi</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#">Beranda</a></li>
-                        <li><a href="#">Tentang kami</a></li>
-                        <li><a href="#">Layanan</a></li>
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="#about">Tentang kami</a></li>
+                        <li><a href="#skills">Layanan</a></li>
                         <li><a href="#">Karier</a></li>
                         <li><a href="#">FAQ</a></li>
                     </ul>
@@ -367,22 +410,29 @@
                     <ul class="list-unstyled">
                         <li><a href="#">privacy</a></li>
                         <li><a href="#">syarat penggunaan</a></li>
-                        <li><a href="blog.html" class="text-decoration-none">Blog</a></li>
+                        <li><a href="blog.html">Blog</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </footer>
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- jQuery Validation Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Custom JavaScript for Hamburger Menu -->
+    <!-- Custom JavaScript -->
     <script src="script.js"></script>
     <script src="contact-validation.js"></script>
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize only necessary components
+        document.addEventListener('DOMContentLoaded', function() {
+            // Other initializations if needed
+        });
+    </script>
 </body>
 </html>
