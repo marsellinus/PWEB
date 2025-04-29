@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Secure IoT Network - Marsellinus A.K Portfolio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Prism.js for code highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header & Navigation -->
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <h2 class="m-0 fw-bold">My<span class="text-primary">Portfolio</span></h2>
+                </a>
+                
+                <!-- Hamburger Menu Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#skills">My Skill</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#portfolio">Portfolio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="blog.html">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#contact">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Article Header -->
+    <header class="article-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 mx-auto">
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="blog.html">Blog</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Network Security</li>
+                        </ol>
+                    </nav>
+                    
+                    <span class="article-category">Network</span>
+                    <h1 class="article-title">Building a Secure IoT Network with Intrusion Detection</h1>
+                    <div class="article-meta">
+                        <span><i class="far fa-calendar-alt me-2"></i> June 10, 2024</span>
+                        <span class="ms-3"><i class="far fa-clock me-2"></i> 10 min read</span>
+                        <span class="ms-3"><i class="far fa-comment me-2"></i> 4 Comments</span>
+                        <span class="ms-3"><i class="far fa-eye me-2"></i> 1.2K Views</span>
+                    </div>
+                    <div class="article-author">
+                        <img src="images/profile.jpg" alt="Marsellinus A.K" class="article-author-img">
+                        <div>
+                            <p class="article-author-name">Marsellinus A.K</p>
+                            <p class="article-author-title">Network Engineer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <!-- Main Content Column -->
+            <div class="col-lg-9 mx-auto">
+                <div class="article-image">
+                    <img src="images/blog2.jpg" alt="IoT Network Diagram" class="img-fluid">
+                    <div class="image-caption text-center mt-2 text-muted"><small>Network architecture diagram for the IoT security implementation</small></div>
+                </div>
+                
+                <!-- Table of Contents -->
+                <div class="toc-container card mb-4 mt-4">
+                    <div class="card-body">
+                        <h5>Table of Contents</h5>
+                        <ol class="toc-list">
+                            <li><a href="#intro">Introduction</a></li>
+                            <li><a href="#challenges">Client Requirements and Challenges</a></li>
+                            <li><a href="#architecture">The Solution Architecture</a></li>
+                            <li><a href="#segmentation">Network Segmentation Implementation</a></li>
+                            <li><a href="#ids">Intrusion Detection System</a></li>
+                            <li><a href="#telegram">Telegram Notification Integration</a></li>
+                            <li><a href="#results">Results and Benefits</a></li>
+                            <li><a href="#lessons">Lessons Learned</a></li>
+                            <li><a href="#conclusion">Conclusion</a></li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="article-content">
+                    <div id="intro">
+                        <p>
+                            In this case study, I'll walk through my recent project implementing a secure IoT network with real-time intrusion detection and automated notification systems for a medium-sized commercial client. This solution significantly enhanced their security posture while providing immediate alerts through Telegram integration.
+                        </p>
+                    </div>
+                    
+                    <div id="challenges">
+                        <h2>Client Requirements and Challenges</h2>
+                        <p>
+                            My client, a retail business with multiple locations, had recently invested in IoT devices for inventory management, environmental monitoring, and security. However, they were concerned about the security implications of adding dozens of new devices to their network.
+                        </p>
+                        <p>
+                            The key challenges included:
+                        </p>
+                        <ul>
+                            <li>Securing a heterogeneous IoT environment with devices from multiple manufacturers</li>
+                            <li>Implementing real-time intrusion detection with minimal false positives</li>
+                            <li>Creating an immediate notification system that would alert security staff 24/7</li>
+                            <li>Designing a solution within a modest budget that could scale as the business grows</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="architecture">
+                        <h2>The Solution Architecture</h2>
+                        <p>
+                            After analyzing the requirements, I designed a comprehensive network architecture that incorporated several layers of security while maintaining performance and reliability.
+                        </p>
+                        
+                        <blockquote>
+                            "The most effective IoT security solutions combine network segmentation, continuous monitoring, and automated response mechanisms to minimize both the likelihood and impact of security breaches."
+                        </blockquote>
+                    </div>
+                    
+                    <!-- Technical Diagram -->
+                    <div class="tech-diagram my-4">
+                        <div class="card">
+                            <div class="card-body bg-light">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <pre class="mb-0"><code class="language-bash"># Network Architecture Diagram
+Corporate Network       IoT Devices
+[Core Router] --------+  
+      |               |
+      |               |
+[Firewall] ------ [Firewall]
+      |               |
+      |               |
+[Corp Switches] -- [IoT Switches]
+      |               |
+      |               |
+[IDS Sensors] ---- [IoT VLAN1] [IoT VLAN2]
+      |               |            |
+      |               |            |
+[ELK Stack] ------ [Inventory]  [Sensors]
+      |                
+      |                
+[Telegram Bot]</code></pre>
+                                    </div>
+                                    <div class="col-md-4 text-center">
+                                        <i class="fas fa-shield-alt fa-4x text-primary mb-3"></i>
+                                        <p class="fw-bold">Layered Security Approach</p>
+                                        <small class="text-muted">Network segmentation with dedicated monitoring and alerting</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="segmentation">
+                        <h2>Network Segmentation Implementation</h2>
+                        <p>
+                            The first step was to implement proper network segmentation using VLANs to isolate IoT devices from the main corporate network. This approach follows the principle of least privilege, ensuring that even if an IoT device is compromised, the attacker's ability to move laterally through the network is severely limited.
+                        </p>
+                        <p>
+                            I configured the network switches to create dedicated VLANs for different categories of IoT devices, with strict access control lists (ACLs) defining what types of traffic could flow between segments.
+                        </p>
+                    </div>
+                    
+                    <div id="ids">
+                        <h2>Intrusion Detection System</h2>
+                        <p>
+                            For the intrusion detection component, I deployed a combination of open-source and custom tools:
+                        </p>
+                        <ul>
+                            <li>Suricata IDS to monitor network traffic and identify suspicious patterns</li>
+                            <li>Custom Python scripts to analyze device behavior and detect anomalies</li>
+                            <li>A centralized logging system using the ELK stack (Elasticsearch, Logstash, Kibana) for log aggregation and analysis</li>
+                        </ul>
+                        <p>
+                            The system was fine-tuned to establish baselines for normal IoT device behavior, significantly reducing false positives while maintaining sensitivity to genuine threats.
+                        </p>
+                    </div>
+                    
+                    <div id="telegram">
+                        <h2>Telegram Notification Integration</h2>
+                        <p>
+                            One of the most innovative aspects of this solution was the integration with Telegram for instant notifications. I developed a custom bot using Telegram's Bot API that would send immediate alerts to security staff when suspicious activity was detected.
+                        </p>
+                        <p>
+                            The notifications included:
+                        </p>
+                        <ul>
+                            <li>Alert severity level (color-coded for quick recognition)</li>
+                            <li>Nature of the potential threat</li>
+                            <li>Affected device(s) and network segment</li>
+                            <li>Timestamp and duration of the suspicious activity</li>
+                            <li>Direct links to the monitoring dashboard for further investigation</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Alert Example -->
+                    <div class="alert alert-danger mt-4">
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <i class="fas fa-exclamation-triangle fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="alert-heading">Example Alert: High Severity</h5>
+                                <p class="mb-1"><strong>Threat Detected:</strong> Port scanning activity from IoT device <code>192.168.20.45</code> (Smart Thermostat)</p>
+                                <p class="mb-1"><strong>Time:</strong> 2024-05-18T14:22:31Z</p>
+                                <p class="mb-0"><strong>Action Required:</strong> Investigate device for possible compromise <a href="#">View Dashboard →</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="results">
+                        <h2>Results and Benefits</h2>
+                        <p>
+                            After deploying this solution, the client experienced several significant benefits:
+                        </p>
+                        <ul>
+                            <li>83% reduction in the time between detection and response to security incidents</li>
+                            <li>Successful prevention of two attempted breaches during the first three months</li>
+                            <li>Enhanced visibility into network behavior and IoT device performance</li>
+                            <li>Improved compliance with industry security standards</li>
+                            <li>Scalable architecture that can accommodate business growth</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Results Chart -->
+                    <div class="results-chart my-4 p-4 bg-light rounded">
+                        <div class="row">
+                            <div class="col-md-3 text-center mb-4 mb-md-0">
+                                <div class="display-4 fw-bold text-danger">83%</div>
+                                <p class="mb-0">Reduction in<br>response time</p>
+                            </div>
+                            <div class="col-md-3 text-center mb-4 mb-md-0">
+                                <div class="display-4 fw-bold text-danger">2</div>
+                                <p class="mb-0">Breaches<br>prevented</p>
+                            </div>
+                            <div class="col-md-3 text-center mb-4 mb-md-0">
+                                <div class="display-4 fw-bold text-danger">100%</div>
+                                <p class="mb-0">Visibility<br>increase</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="display-4 fw-bold text-danger">95%</div>
+                                <p class="mb-0">Client<br>satisfaction</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="lessons">
+                        <h2>Lessons Learned</h2>
+                        <p>
+                            This project reinforced several important principles for secure IoT deployments:
+                        </p>
+                        <ul>
+                            <li>Network segmentation is essential for IoT security</li>
+                            <li>Behavior-based detection is more effective than signature-based approaches for IoT</li>
+                            <li>Automated notification systems dramatically improve incident response times</li>
+                            <li>Open-source security tools can be effectively customized for specific business needs</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="conclusion">
+                        <h2>Conclusion</h2>
+                        <p>
+                            This project demonstrates how combining proper network architecture, intrusion detection systems, and modern communication tools can create a robust security solution for IoT environments. By implementing this system, the client achieved peace of mind knowing their expanding IoT infrastructure is protected by multiple layers of security with immediate notification capabilities.
+                        </p>
+                        <p>
+                            If you're interested in discussing similar solutions for your organization, feel free to <a href="index.html#contact">contact me</a> for a consultation.
+                        </p>
+                    </div>
+                    
+                    <!-- CTA Box -->
+                    <div class="cta-box bg-light p-4 rounded mt-5 text-center">
+                        <h4>Need help securing your IoT infrastructure?</h4>
+                        <p class="mb-3">I can help you implement a similar solution tailored to your organization's needs.</p>
+                        <a href="index.html#contact" class="btn btn-danger">Contact Me For Consultation</a>
+                    </div>
+                </div>
+                
+                <!-- Tags -->
+                <div class="article-tags mt-4">
+                    <span class="me-2">Tags:</span>
+                    <a href="#" class="badge bg-light text-dark me-1">IoT Security</a>
+                    <a href="#" class="badge bg-light text-dark me-1">Network Segmentation</a>
+                    <a href="#" class="badge bg-light text-dark me-1">Intrusion Detection</a>
+                    <a href="#" class="badge bg-light text-dark me-1">Telegram Integration</a>
+                </div>
+                
+                <!-- Share Buttons with Share Count -->
+                <div class="share-buttons">
+                    <h5 class="mb-3">Share this article:</h5>
+                    <a href="#" class="btn btn-primary me-2" title="Share on Facebook">
+                        <i class="fab fa-facebook-f"></i> <span class="d-none d-md-inline">Facebook</span> <span class="badge bg-light text-dark">24</span>
+                    </a>
+                    <a href="#" class="btn btn-info me-2" title="Share on Twitter">
+                        <i class="fab fa-twitter"></i> <span class="d-md-inline">Twitter</span> <span class="badge bg-light text-dark">18</span>
+                    </a>
+                    <a href="#" class="btn btn-danger me-2" title="Share on Pinterest">
+                        <i class="fab fa-pinterest"></i> <span class="d-none d-md-inline">Pinterest</span> <span class="badge bg-light text-dark">5</span>
+                    </a>
+                    <a href="#" class="btn btn-success me-2" title="Share on WhatsApp">
+                        <i class="fab fa-whatsapp"></i> <span class="d-none d-md-inline">WhatsApp</span>
+                    </a>
+                    <a href="#" class="btn btn-secondary" title="Share via Email">
+                        <i class="far fa-envelope"></i> <span class="d-none d-md-inline">Email</span>
+                    </a>
+                </div>
+                
+                <!-- Author Box -->
+                <div class="author-box bg-light p-4 my-4 rounded">
+                    <div class="row">
+                        <div class="col-md-3 text-center mb-3 mb-md-0">
+                            <img src="images/profile.jpg" alt="Marsellinus A.K" class="author-lg-img">
+                            <div class="mt-2">
+                                <a href="#" class="btn btn-sm btn-outline-primary">Follow</a>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <h4>About Marsellinus A.K</h4>
+                            <p>Network engineer and security specialist with over 5 years of experience in designing and implementing secure network infrastructures. Focused on IoT security and building resilient systems that protect organizations from emerging threats.</p>
+                            <div class="social-links">
+                                <a href="#" class="me-2" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="me-2" title="GitHub"><i class="fab fa-github"></i></a>
+                                <a href="#" class="me-2" title="Twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" title="Personal Website"><i class="fas fa-globe"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Post Navigation -->
+                <div class="post-navigation d-flex justify-content-between">
+                    <div>
+                        <p class="text-muted mb-1">Previous Project</p>
+                        <a href="#" class="d-block"><i class="fas fa-chevron-left me-2"></i> Creating Responsive Dashboards with Bootstrap 5</a>
+                    </div>
+                    <div class="text-end">
+                        <p class="text-muted mb-1">Next Project</p>
+                        <a href="#" class="d-block">Data Visualization Techniques for Business Intelligence <i class="fas fa-chevron-right ms-2"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Comment Section -->
+                <div class="comment-section">
+                    <h3 class="mb-4">Comments (4)</h3>
+                    
+                    <!-- Comment 1 -->
+                    <div class="comment">
+                        <div class="d-flex">
+                            <div class="comment-avatar me-3">
+                                <img src="https://via.placeholder.com/60" alt="User">
+                            </div>
+                            <div class="comment-body">
+                                <h5 class="comment-author">Dewi Lestari</h5>
+                                <p class="comment-date">June 12, 2024 at 2:30 PM</p>
+                                <p>This is exactly the system you implemented for our company! It's been working flawlessly and has already prevented several potential security incidents. The Telegram notifications are especially useful for our team who isn't always at their desks.</p>
+                                <button class="btn btn-sm btn-outline-secondary">Reply</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comment 2 -->
+                    <div class="comment">
+                        <div class="d-flex">
+                            <div class="comment-avatar me-3">
+                                <img src="https://via.placeholder.com/60" alt="User">
+                            </div>
+                            <div class="comment-body">
+                                <h5 class="comment-author">Budi Santoso</h5>
+                                <p class="comment-date">June 13, 2024 at 9:15 AM</p>
+                                <p>Great implementation! I'm curious about the specific Suricata rules you used for IoT devices. Did you develop custom rules or adapt existing ones? I'm working on a similar project and would appreciate any insights.</p>
+                                <button class="btn btn-sm btn-outline-secondary">Reply</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comment 3 -->
+                    <div class="comment">
+                        <div class="d-flex">
+                            <div class="comment-avatar me-3">
+                                <img src="https://via.placeholder.com/60" alt="User">
+                            </div>
+                            <div class="comment-body">
+                                <h5 class="comment-author">Marsellinus A.K</h5>
+                                <p class="comment-date">June 13, 2024 at 10:40 AM</p>
+                                <p>@Budi Santoso: Thanks for your question! I used a combination of existing rules from the Emerging Threats ruleset and custom rules developed specifically for the client's IoT devices. I found that the most effective approach was to monitor the devices for a few weeks to establish behavioral baselines, then create rules based on those patterns. Feel free to reach out directly if you'd like more specific information.</p>
+                                <button class="btn btn-sm btn-outline-secondary">Reply</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Comment Form -->
+                    <div class="comment-form mt-5">
+                        <h3 class="mb-4">Leave a Comment</h3>
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Comment</label>
+                                <textarea class="form-control" id="comment" rows="5" required></textarea>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="saveInfo">
+                                <label class="form-check-label" for="saveInfo">
+                                    Save my name and email for the next time I comment
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Post Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recommended Articles -->
+    <section class="recommendations">
+        <div class="container">
+            <h3 class="mb-4">More From My Portfolio</h3>
+            <div class="row">
+                <!-- Recommendation 1 -->
+                <div class="col-md-4">
+                    <div class="card recommendation-card">
+                        <img src="images/blog1.jpg" class="card-img-top" alt="Article Image">
+                        <div class="card-body">
+                            <span class="badge bg-danger mb-2">Web Dev</span>
+                            <h5 class="card-title">Creating Responsive Dashboards with Bootstrap 5</h5>
+                            <p class="card-text text-muted">June 15, 2024</p>
+                            <a href="article.html?id=1" class="btn btn-outline-danger">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recommendation 2 -->
+                <div class="col-md-4">
+                    <div class="card recommendation-card">
+                        <img src="images/blog3.jpg" class="card-img-top" alt="Article Image">
+                        <div class="card-body">
+                            <span class="badge bg-danger mb-2">Data Science</span>
+                            <h5 class="card-title">Data Visualization Techniques for Business Intelligence</h5>
+                            <p class="card-text text-muted">June 5, 2024</p>
+                            <a href="article.html?id=3" class="btn btn-outline-danger">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recommendation 3 -->
+                <div class="col-md-4">
+                    <div class="card recommendation-card">
+                        <img src="images/blog4.jpg" class="card-img-top" alt="Article Image">
+                        <div class="card-body">
+                            <span class="badge bg-danger mb-2">Web Dev</span>
+                            <h5 class="card-title">Implementing Laravel for an Enterprise Reporting System</h5>
+                            <p class="card-text text-muted">May 30, 2024</p>
+                            <a href="article.html?id=4" class="btn btn-outline-danger">View Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Subscribe -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <h3>Subscribe to My Tech Newsletter</h3>
+                    <p class="text-muted mb-4">Get notified about new case studies, tutorials, and tech insights.</p>
+                    <form class="subscription-form">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your email address">
+                            <button class="btn btn-danger" type="submit">Subscribe</button>
+                        </div>
+                        <small class="text-muted">I respect your privacy. Unsubscribe at any time.</small>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <img src="images/logo.svg" alt="Logo" height="40" class="mb-3">
+                    <h5>Kontak</h5>
+                    <p>Connect With Us</p>
+                    <div class="social-links mb-3">
+                        <a href="#" class="social-icon me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <p class="small text-muted">©Karyameu 2025</p>
+                </div>
+                
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5>Alamat</h5>
+                    <p>Jalan Kerana Kimrun Mendewa<br>
+                    Alamat No. 123 RT.01 RW.777</p>
+                    <p>Nomor yang bisa di hubungi:<br>
+                    083XXXXXXXXXX</p>
+                    <p>E-Mail : Admin@karyameu.my.id</p>
+                </div>
+                
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h5>Informasi</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="index.html#about">Tentang kami</a></li>
+                        <li><a href="index.html#skills">Layanan</a></li>
+                        <li><a href="#">Karier</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h5>Layanan</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Promo</a></li>
+                        <li><a href="#">Paket</a></li>
+                        <li><a href="#">Sertifikat</a></li>
+                        <li><a href="#">Afiliasi</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-2">
+                    <h5>Kebijakan</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">privacy</a></li>
+                        <li><a href="#">syarat penggunaan</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js for code highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
