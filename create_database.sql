@@ -1,20 +1,25 @@
--- Create database for portfolio contact form
-CREATE DATABASE IF NOT EXISTS portfolio_contact;
+-- SQL script to create the database and tables for the Portfolio Website
+
+-- Create the database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS pweb_db;
 
 -- Use the database
-USE portfolio_contact;
+USE pweb_db;
 
--- Create contact_messages table
+-- Contact form submissions table
 CREATE TABLE IF NOT EXISTS contact_messages (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(50) NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    phone VARCHAR(15) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
     message TEXT NOT NULL,
-    created_at DATETIME NOT NULL,
-    is_read BOOLEAN DEFAULT FALSE,
-    replied_at DATETIME NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    submission_date DATETIME NOT NULL
+);
 
--- Create an index for better performance
-CREATE INDEX idx_contact_created_at ON contact_messages(created_at);
+-- Add indexes for better performance
+ALTER TABLE contact_messages ADD INDEX idx_email (email);
+ALTER TABLE contact_messages ADD INDEX idx_date (submission_date);
+
+-- Optional: Add a sample record for testing
+-- INSERT INTO contact_messages (full_name, email, phone, message, submission_date)
+-- VALUES ('Test User', 'test@example.com', '+6281234567890', 'This is a test message', NOW());

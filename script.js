@@ -425,6 +425,52 @@ function initArticlePage() {
 }
 
 /**
+ * Initialize mock form functionality for testing without backend
+ * (Moved from mock-submit-form.js)
+ */
+function initMockFormFunctionality() {
+    // Only enable in development/testing environments
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        return;
+    }
+    
+    // Check if we have a form that might need mocking
+    const mockForms = document.querySelectorAll('[data-mock-submit="true"]');
+    if (mockForms.length === 0) return;
+    
+    console.log('Mock form functionality initialized');
+    
+    mockForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if (form.getAttribute('data-mock-submit') === 'true') {
+                e.preventDefault();
+                
+                // Simulate loading
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                
+                // Simulate network delay
+                setTimeout(() => {
+                    // 90% success rate for testing
+                    if (Math.random() < 0.9) {
+                        showSuccess('Success!', 'Your form has been successfully submitted.');
+                    } else {
+                        showError('Error!', 'Something went wrong. Please try again.');
+                    }
+                    
+                    // Reset the form and button
+                    form.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }, 1500);
+            }
+        });
+    });
+}
+
+/**
  * Utility Functions 
  */
 

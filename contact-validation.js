@@ -4,6 +4,17 @@ jQuery(document).ready(function($) {
         return this.optional(element) || /^(\+62|62|0)8[1-9][0-9]{7,11}$/.test(value);
     }, "Please enter a valid Indonesian phone number");
 
+    // Add mock form detection
+    const contactForm = $("#contact-form");
+    if (contactForm.length > 0) {
+        // Only use mock in development environments and if no backend is available
+        if ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+            window.location.pathname.indexOf('file:') !== -1) {
+            contactForm.attr('data-mock-submit', 'true');
+            console.log('Mock form submission enabled for contact form');
+        }
+    }
+
     // Form validation
     $("#contact-form").validate({
         // Validation rules
@@ -74,42 +85,152 @@ jQuery(document).ready(function($) {
 
         // Submit handler
         submitHandler: function(form) {
-            // Disable submit button to prevent double submission
-            var $submitBtn = $(form).find("button[type='submit']");
-            var originalBtnText = $submitBtn.html();
+            // Prevent default form submission
+            event.preventDefault();
             
-            $submitBtn.prop("disabled", true).html("<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Mengirim...");
+            // Get form data
+            var formData = $(form).serialize();
             
-            // Collect form data
-            var formData = {};
-            $(form).serializeArray().forEach(function(item) {
-                formData[item.name] = item.value;
-            });
+            // Store submit button reference outside of AJAX callbacks
+            var submitBtn = $(form).find('button[type="submit"]');
+            var originalBtnText = submitBtn.html();
+            submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...');
             
-            // Log form data (for debugging)
-            console.log("Form data:", formData);
-            
-            // Simulate server processing delay
-            setTimeout(function() {
-                // Show success message directly using the global function from script.js
-                if (typeof showSuccess === 'function') {
-                    showSuccess("Pesan Terkirim!", "Terima kasih telah menghubungi kami. Pesan Anda telah tersimpan.");
-                } else {
-                    // Fallback to local function
-                    showSuccessMessage("Pesan Terkirim!", "Terima kasih telah menghubungi kami. Pesan Anda telah tersimpan.");
-                }
+            // Check if running on localhost:5500 (Live Server)
+            if (window.location.port === "5500") {
+                // Redirect to local XAMPP URL
+                var xamppUrl = "http://localhost/Website/submit_form.php";
                 
-                // Reset form
-                $(form).trigger("reset");
-                
-                // Clear validation styling
-                $(form).find(".is-valid, .is-invalid").removeClass("is-valid is-invalid");
-                
-                // Re-enable submit button
-                $submitBtn.prop("disabled", false).html(originalBtnText);
-            }, 1500);
+                // Use AJAX to send to XAMPP instead of Live Server
+                $.ajax({
+                    type: 'POST',
+                    url: xamppUrl,
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        // Show success message
+                        $('#contact-form').hide();
+                        $('<div class="alert alert-success mt-3">' + 
+                          '<h4>Thank you for your message!</h4>' +
+                          '<p>' + (response.message || 'We will get back to you soon.') + '</p>' +
+                          '<button class="btn btn-secondary btn-sm mt-2" id="show-form-again">Send another message</button>' +
+                          '</div>').insertAfter('#contact-form');
+                          
+                        // Add event handler for sending another message
+                        $('#show-form-again').on('click', function() {
+                            $('.alert').remove();
+                            $('#contact-form').trigger('reset').show();
+                        });
+                        
+                        // Reset button (submitBtn is now always defined)
+                        submitBtn.prop('disabled', false).html(originalBtnText);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("AJAX Error Status:", status);
+                        console.log("Error:", error);
+                        console.log("Response Text:", xhr.responseText);
+                        
+                        let errorMessage = "An error occurred while submitting the form. Please make sure XAMPP is running with Apache and MySQL services started.";
+                        
+                        try {
+                            if (xhr.responseText) {
+                                // First check if there's JSON embedded in the response
+                                const jsonStartPos = xhr.responseText.indexOf('{"status"');
+                                if (jsonStartPos !== -1) {
+                                    const jsonStr = xhr.responseText.substring(jsonStartPos);
+                                    const response = JSON.parse(jsonStr);
+                                    if (response && response.message) {
+                                        errorMessage = response.message;
+                                    }
+                                } else {
+                                    // Try parsing the entire response as JSON
+                                    const response = JSON.parse(xhr.responseText);
+                                    if (response && response.message) {
+                                        errorMessage = response.message;
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error parsing response:", e);
+                        }
+                        
+                        // Show error message
+                        if ($('#form-message').length === 0) {
+                            $('#contact-form').before('<div id="form-message"></div>');
+                        }
+                        $('#form-message').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+                        
+                        // Reset button (submitBtn is now always defined)
+                        submitBtn.prop('disabled', false).html(originalBtnText);
+                    }
+                });
+            } else {
+                // Normal AJAX submission
+                $.ajax({
+                    type: 'POST',
+                    url: 'submit_form.php',
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        // Show success message
+                        $('#contact-form').hide();
+                        $('<div class="alert alert-success mt-3">' + 
+                          '<h4>Thank you for your message!</h4>' +
+                          '<p>' + (response.message || 'We will get back to you soon.') + '</p>' +
+                          '<button class="btn btn-secondary btn-sm mt-2" id="show-form-again">Send another message</button>' +
+                          '</div>').insertAfter('#contact-form');
+                          
+                        // Add event handler for sending another message
+                        $('#show-form-again').on('click', function() {
+                            $('.alert').remove();
+                            $('#contact-form').trigger('reset').show();
+                        });
+                        
+                        // Reset button (submitBtn is now always defined)
+                        submitBtn.prop('disabled', false).html(originalBtnText);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("AJAX Error Status:", status);
+                        console.log("Error:", error);
+                        console.log("Response Text:", xhr.responseText);
+                        
+                        let errorMessage = "An error occurred while submitting the form. Please try again.";
+                        
+                        try {
+                            if (xhr.responseText) {
+                                // First check if there's JSON embedded in the response
+                                const jsonStartPos = xhr.responseText.indexOf('{"status"');
+                                if (jsonStartPos !== -1) {
+                                    const jsonStr = xhr.responseText.substring(jsonStartPos);
+                                    const response = JSON.parse(jsonStr);
+                                    if (response && response.message) {
+                                        errorMessage = response.message;
+                                    }
+                                } else {
+                                    // Try parsing the entire response as JSON
+                                    const response = JSON.parse(xhr.responseText);
+                                    if (response && response.message) {
+                                        errorMessage = response.message;
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            console.error("Error parsing response:", e);
+                        }
+                        
+                        // Show error message
+                        if ($('#form-message').length === 0) {
+                            $('#contact-form').before('<div id="form-message"></div>');
+                        }
+                        $('#form-message').html('<div class="alert alert-danger">' + errorMessage + '</div>');
+                        
+                        // Reset button (submitBtn is now always defined)
+                        submitBtn.prop('disabled', false).html(originalBtnText);
+                    }
+                });
+            }
             
-            return false; // Prevent form submission
+            return false;
         }
     });
     
@@ -121,7 +242,8 @@ jQuery(document).ready(function($) {
                     icon: "success",
                     title: title,
                     text: text,
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#dc3545"
                 }).then(function() {
                     deferred.resolve();
                 });
@@ -140,7 +262,8 @@ jQuery(document).ready(function($) {
                     icon: "error",
                     title: "Gagal",
                     text: text,
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#dc3545"
                 }).then(function() {
                     deferred.resolve();
                 });

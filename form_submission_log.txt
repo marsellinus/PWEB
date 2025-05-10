@@ -1,0 +1,40 @@
+2025-05-10 10:45:18 - Received form submission
+POST data: Array
+(
+    [fullName] => Marsellinus Aditya Kristianto
+    [email] => 237006038@student.unsil.ac.id
+    [phone] => 085179792507
+    [message] => halo kamu mau kerja?
+)
+
+Attempting database connection to contact_db...
+Prepared statement successfully
+Successfully inserted record with ID: 1
+2025-05-10 10:47:32 - Received form submission
+POST data: Array
+(
+    [fullName] => Marsellinus Aditya Kristianto
+    [email] => 237006038@student.unsil.ac.id
+    [phone] => 085179792507
+    [message] => halo kamu mau kerja?
+)
+
+Attempting database connection to portfolio...
+Database 'portfolio' does not exist, creating it...
+Created database 'portfolio'
+Table 'contact_messages' does not exist, creating it...
+Created table 'contact_messages'
+Prepared statement successfully
+Successfully inserted record with ID: 1
+2025-05-10 10:49:55 - Received form submission
+POST data: Array
+(
+    [fullName] => Marsellinus Aditya Kristianto
+    [email] => 237006038@student.unsil.ac.id
+    [phone] => 085179792507
+    [message] => halo kamu mau kerja?
+)
+
+Attempting database connection to pweb_db...
+Prepared statement successfully
+Successfully inserted record with ID: 4
