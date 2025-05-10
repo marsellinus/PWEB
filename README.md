@@ -1,31 +1,100 @@
-# Website Development Setup
+# Personal Portfolio Website
 
-## Running the PHP Backend
+A modern, responsive portfolio website built with HTML, CSS, JavaScript, and PHP. Showcases professional experience, projects, blog articles, and includes contact form functionality with database integration.
 
-This project includes PHP files that need to be served by a PHP-enabled web server. Here are your options:
+## Features
 
-### Option 1: XAMPP/WAMP/MAMP
+- Responsive design that works on all devices
+- Portfolio section to showcase projects
+- Blog with article functionality
+- Contact form with validation and database storage
+- Skill ratings and testimonial sections
 
-1. Install [XAMPP](https://www.apachefriends.org/), [WAMP](https://www.wampserver.com/), or [MAMP](https://www.mamp.info/)
-2. Place your project files in the `htdocs` (XAMPP/MAMP) or `www` (WAMP) directory
-3. Start the Apache server
-4. Access your project at `http://localhost/your-project-folder`
+## Technology Stack
 
-### Option 2: PHP's Built-in Server
+- **Frontend**: HTML5, CSS3, JavaScript, Bootstrap 5
+- **Backend**: PHP
+- **Database**: MySQL
+- **Libraries**: jQuery, jQuery Validation, Font Awesome, SweetAlert2
 
-If you have PHP installed on your system, you can run:
+## Setup Instructions
 
-```bash
-cd path/to/your/project
-php -S localhost:8000
-```
+### Requirements
 
-Then access your site at `http://localhost:8000`
+- XAMPP, WAMP, or similar local development environment
+- Web browser
+- Text editor or IDE
 
-## Form Submission Issues
+### Installation
 
-If you're encountering issues with form submission:
+1. Clone or download this repository to your XAMPP htdocs folder:
+   ```
+   C:\xampp\htdocs\Website\
+   ```
 
-1. Make sure you're accessing the site through a proper server (not just opening HTML files directly)
-2. Check the browser console for errors
-3. Verify that PHP is properly processing your requests
+2. Start XAMPP Control Panel and ensure Apache and MySQL services are running
+
+3. The database and table will be automatically created when the first form is submitted, or you can manually create them using the SQL below:
+
+   ```sql
+   CREATE DATABASE IF NOT EXISTS pweb_db;
+   USE pweb_db;
+   CREATE TABLE IF NOT EXISTS contact_messages (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       full_name VARCHAR(100) NOT NULL,
+       email VARCHAR(100) NOT NULL,
+       phone VARCHAR(20) NOT NULL,
+       message TEXT NOT NULL,
+       submission_date DATETIME NOT NULL
+   );
+   ```
+
+4. Access the website through your browser:
+   ```
+   http://localhost/Website/
+   ```
+
+### Using with VS Code Live Server
+
+If you're using VS Code Live Server extension:
+
+1. The contact form is configured to detect this environment (port 5500)
+2. It will automatically redirect AJAX requests to the XAMPP server at http://localhost/Website/submit_form.php
+3. Make sure XAMPP is running with both Apache and MySQL services active
+
+## Project Structure
+
+- `index.html` - Homepage with portfolio overview
+- `blog.html` - Blog listing page
+- `article.html` - Individual article template
+- `style.css` - Main stylesheet
+- `script.js` - Main JavaScript file
+- `contact-validation.js` - Form validation and submission
+- `submit_form.php` - Backend script for contact form processing
+
+## Contact Form
+
+The contact form processes data through the following steps:
+
+1. Client-side validation with jQuery Validate
+2. AJAX submission to prevent page reload
+3. Server-side processing with PHP
+4. MySQL database storage
+5. Success/error response handling
+
+## Customization
+
+- Edit HTML files to update content
+- Modify CSS for styling changes
+- Update JavaScript for behavior changes
+- Configure PHP as needed for backend functionality
+
+## Troubleshooting
+
+- **Form submission errors**: Ensure Apache and MySQL services are running in XAMPP
+- **Database connection issues**: Verify database credentials in submit_form.php
+- **PHP errors**: Check XAMPP error logs at C:\xampp\php\logs
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
